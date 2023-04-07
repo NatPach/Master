@@ -1,0 +1,16 @@
+micronaut:
+  application:
+    name: magisterka
+  security:
+    authentication: bearer
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: "MY_SECRET_SIGNATURE_AT_LEAST_256_LENGTH"
+
+netty:
+  default:
+    allocator:
+      max-order: 3
