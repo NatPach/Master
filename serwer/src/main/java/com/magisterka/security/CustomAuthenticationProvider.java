@@ -25,11 +25,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         if (httpRequest == null) {
             return Flux.just(AuthenticationResponse.failure("Request jest pusty."));
         }
-        Optional<LoginSource> zrodloLogowania = httpRequest.getAttribute(LoginSource.REQUEST_ATTRIBUTE, LoginSource.class);
-        if (zrodloLogowania.isEmpty()) {
+        Optional<LoginSource> loginSource = httpRequest.getAttribute(LoginSource.REQUEST_ATTRIBUTE, LoginSource.class);
+        if (loginSource.isEmpty()) {
             return Flux.just(AuthenticationResponse.failure("Brak zrodla logowania."));
         }
-        switch (zrodloLogowania.get()) {
+        switch (loginSource.get()) {
             case DOCTOR:
                 return Flux.just(authenticateDoctor(authenticationRequest));
             case PATIENT:

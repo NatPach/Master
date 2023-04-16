@@ -7,9 +7,12 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 import java.util.List;
+import java.util.Map;
 
 @Singleton
 public class DoctorAuthProvider {
+    public static final String DOCTOR_ID_ATTRIBUTE = "doctor_id";
+
     @Inject
     private DoctorRepository doctorRepository;
     @Inject
@@ -18,7 +21,12 @@ public class DoctorAuthProvider {
     public AuthenticationResponse authenticateDoctor(String username, String password) {
         return doctorRepository.find(username)
                 .filter(doctor -> passwordEncoder.matches(password, doctor.getPasswordHash()))
-                .map(doctor -> AuthenticationResponse.success(doctor.getUsername(), List.of(SecurityRoles.DOCTOR)))
+                .map(this::getSuccessAuthResponse)
                 .orElseGet(AuthenticationResponse::failure);
+    }
+
+    private AuthenticationResponse getSuccessAuthResponse(DoctorEntity doctor) {
+        return AuthenticationResponse.success(
+                doctor.getUsername(), List.of(SecurityRoles.DOCTOR), Map.of(DOCTOR_ID_ATTRIBUTE, doctor.getId()));
     }
 }
