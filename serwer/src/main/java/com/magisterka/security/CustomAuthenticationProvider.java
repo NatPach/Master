@@ -1,7 +1,7 @@
 package com.magisterka.security;
 
-import com.magisterka.lekarz.DoctorAuthProvider;
-import com.magisterka.pacjent.PatientAuthProvider;
+import com.magisterka.doctor.DoctorAuthProvider;
+import com.magisterka.patient.PatientAuthProvider;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.security.authentication.AuthenticationProvider;
 import io.micronaut.security.authentication.AuthenticationRequest;

@@ -1,4 +1,4 @@
-package com.magisterka.lekarz;
+package com.magisterka.doctor;
 
 import com.magisterka.security.BaseLoginController;
 import com.magisterka.security.LoginSource;

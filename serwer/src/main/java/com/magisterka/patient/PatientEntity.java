@@ -1,4 +1,4 @@
-package com.magisterka.lekarz;
+package com.magisterka.patient;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,11 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
-@Entity(name = "doctor")
+@Entity(name = "patient")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DoctorEntity {
+public class PatientEntity {
     @Id
     @GeneratedValue
     private Long id;

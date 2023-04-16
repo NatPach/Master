@@ -1,4 +1,4 @@
-package com.magisterka.lekarz;
+package com.magisterka.doctor;
 
 import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.repository.CrudRepository;
