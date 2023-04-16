@@ -1,18 +1,25 @@
 package com.magisterka.security;
 
+import com.magisterka.lekarz.LekarzAuthProvider;
+import com.magisterka.pacjent.PacjentAuthProvider;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.security.authentication.AuthenticationProvider;
 import io.micronaut.security.authentication.AuthenticationRequest;
 import io.micronaut.security.authentication.AuthenticationResponse;
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 
-import java.util.List;
 import java.util.Optional;
 
 @Singleton
 public class CustomAuthenticationProvider implements AuthenticationProvider {
+    @Inject
+    private LekarzAuthProvider lekarzAuthProvider;
+    @Inject
+    private PacjentAuthProvider pacjentAuthProvider;
+
     @Override
     public Publisher<AuthenticationResponse> authenticate(HttpRequest<?> httpRequest, AuthenticationRequest<?, ?> authenticationRequest) {
         if (httpRequest == null) {
@@ -32,13 +39,14 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     }
 
     private AuthenticationResponse zalogujLekarza(AuthenticationRequest<?, ?> authenticationRequest) {
-        if (authenticationRequest.getIdentity().equals("lekarz") && authenticationRequest.getSecret().equals("password")) {
-            return AuthenticationResponse.success("lekarz", List.of(SecurityRoles.LEKARZ));
-        }
-        return AuthenticationResponse.failure();
+        String username = authenticationRequest.getIdentity().toString();
+        String password = authenticationRequest.getSecret().toString();
+        return lekarzAuthProvider.zalogujLekarza(username, password);
     }
 
     private AuthenticationResponse zalogujPacjenta(AuthenticationRequest<?, ?> authenticationRequest) {
-        return AuthenticationResponse.failure("Jeszcze nie zaimplementowane");
+        String username = authenticationRequest.getIdentity().toString();
+        String password = authenticationRequest.getSecret().toString();
+        return pacjentAuthProvider.zalogujPacjenta(username, password);
     }
 }
