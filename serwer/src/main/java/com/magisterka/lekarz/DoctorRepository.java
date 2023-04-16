@@ -6,6 +6,6 @@ import io.micronaut.data.repository.CrudRepository;
 import java.util.Optional;
 
 @Repository
-public interface LekarzRepository extends CrudRepository<LekarzEntity, Long> {
-    Optional<LekarzEntity> find(String username);
+public interface DoctorRepository extends CrudRepository<DoctorEntity, Long> {
+    Optional<DoctorEntity> find(String username);
 }

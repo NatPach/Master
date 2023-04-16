@@ -36,10 +36,10 @@ import reactor.core.publisher.Mono;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import static com.magisterka.security.ZrodloLogowania.REQUEST_ATTRIBUTE;
+import static com.magisterka.security.LoginSource.REQUEST_ATTRIBUTE;
 
 @Secured(SecurityRule.IS_ANONYMOUS)
-public abstract class Logowanie {
+public abstract class BaseLoginController {
     @Inject
     private Authenticator authenticator;
     @Inject
@@ -48,7 +48,7 @@ public abstract class Logowanie {
     @Post
     @SingleResult
     public Publisher<MutableHttpResponse<?>> login(@NotNull @Valid @Body UsernamePasswordCredentials usernamePasswordCredentials, HttpRequest<?> request) {
-        request.setAttribute(REQUEST_ATTRIBUTE, zrodloLogowania());
+        request.setAttribute(REQUEST_ATTRIBUTE, loginSource());
         return Flux.from(authenticator.authenticate(request, usernamePasswordCredentials))
                 .map(authenticationResponse -> {
                     if (authenticationResponse.isAuthenticated() && authenticationResponse.getAuthentication().isPresent()) {
@@ -60,5 +60,5 @@ public abstract class Logowanie {
                 }).switchIfEmpty(Mono.defer(() -> Mono.just(HttpResponse.status(HttpStatus.UNAUTHORIZED))));
     }
 
-    protected abstract ZrodloLogowania zrodloLogowania();
+    protected abstract LoginSource loginSource();
 }

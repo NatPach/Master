@@ -9,20 +9,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
-@Entity(name = "lekarz")
+@Entity(name = "doctor")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LekarzEntity {
+public class DoctorEntity {
     @Id
     @GeneratedValue
     private Long id;
 
     @NotBlank
-    private String imie;
+    private String firstName;
 
     @NotBlank
-    private String nazwisko;
+    private String lastName;
 
     @NotBlank
     private String username;

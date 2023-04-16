@@ -6,11 +6,11 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 @Singleton
-public class PacjentAuthProvider {
+public class PatientAuthProvider {
     @Inject
     private PasswordEncoder passwordEncoder;
 
-    public AuthenticationResponse zalogujPacjenta(String username, String password) {
+    public AuthenticationResponse authenticatePatient(String username, String password) {
         return AuthenticationResponse.failure("Jeszcze nie zaimplementowane");
     }
 }

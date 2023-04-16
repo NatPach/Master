@@ -1,7 +1,7 @@
 package com.magisterka.security;
 
-import com.magisterka.lekarz.LekarzAuthProvider;
-import com.magisterka.pacjent.PacjentAuthProvider;
+import com.magisterka.lekarz.DoctorAuthProvider;
+import com.magisterka.pacjent.PatientAuthProvider;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.security.authentication.AuthenticationProvider;
 import io.micronaut.security.authentication.AuthenticationRequest;
@@ -16,37 +16,37 @@ import java.util.Optional;
 @Singleton
 public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Inject
-    private LekarzAuthProvider lekarzAuthProvider;
+    private DoctorAuthProvider doctorAuthProvider;
     @Inject
-    private PacjentAuthProvider pacjentAuthProvider;
+    private PatientAuthProvider patientAuthProvider;
 
     @Override
     public Publisher<AuthenticationResponse> authenticate(HttpRequest<?> httpRequest, AuthenticationRequest<?, ?> authenticationRequest) {
         if (httpRequest == null) {
             return Flux.just(AuthenticationResponse.failure("Request jest pusty."));
         }
-        Optional<ZrodloLogowania> zrodloLogowania = httpRequest.getAttribute(ZrodloLogowania.REQUEST_ATTRIBUTE, ZrodloLogowania.class);
+        Optional<LoginSource> zrodloLogowania = httpRequest.getAttribute(LoginSource.REQUEST_ATTRIBUTE, LoginSource.class);
         if (zrodloLogowania.isEmpty()) {
             return Flux.just(AuthenticationResponse.failure("Brak zrodla logowania."));
         }
         switch (zrodloLogowania.get()) {
-            case LEKARZ:
-                return Flux.just(zalogujLekarza(authenticationRequest));
-            case PACJENT:
-                return Flux.just(zalogujPacjenta(authenticationRequest));
+            case DOCTOR:
+                return Flux.just(authenticateDoctor(authenticationRequest));
+            case PATIENT:
+                return Flux.just(authenticatePatient(authenticationRequest));
         }
         return Flux.just(AuthenticationResponse.failure("Niespodziewany blad."));
     }
 
-    private AuthenticationResponse zalogujLekarza(AuthenticationRequest<?, ?> authenticationRequest) {
+    private AuthenticationResponse authenticateDoctor(AuthenticationRequest<?, ?> authenticationRequest) {
         String username = authenticationRequest.getIdentity().toString();
         String password = authenticationRequest.getSecret().toString();
-        return lekarzAuthProvider.zalogujLekarza(username, password);
+        return doctorAuthProvider.authenticateDoctor(username, password);
     }
 
-    private AuthenticationResponse zalogujPacjenta(AuthenticationRequest<?, ?> authenticationRequest) {
+    private AuthenticationResponse authenticatePatient(AuthenticationRequest<?, ?> authenticationRequest) {
         String username = authenticationRequest.getIdentity().toString();
         String password = authenticationRequest.getSecret().toString();
-        return pacjentAuthProvider.zalogujPacjenta(username, password);
+        return patientAuthProvider.authenticatePatient(username, password);
     }
 }
