@@ -39,14 +39,14 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     }
 
     private AuthenticationResponse authenticateDoctor(AuthenticationRequest<?, ?> authenticationRequest) {
-        String username = authenticationRequest.getIdentity().toString();
+        String email = authenticationRequest.getIdentity().toString();
         String password = authenticationRequest.getSecret().toString();
-        return doctorAuthProvider.authenticateDoctor(username, password);
+        return doctorAuthProvider.authenticateDoctor(email, password);
     }
 
     private AuthenticationResponse authenticatePatient(AuthenticationRequest<?, ?> authenticationRequest) {
-        String username = authenticationRequest.getIdentity().toString();
+        String email = authenticationRequest.getIdentity().toString();
         String password = authenticationRequest.getSecret().toString();
-        return patientAuthProvider.authenticatePatient(username, password);
+        return patientAuthProvider.authenticatePatient(email, password);
     }
 }

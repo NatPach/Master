@@ -18,8 +18,8 @@ public class DoctorAuthProvider {
     @Inject
     private PasswordEncoder passwordEncoder;
 
-    public AuthenticationResponse authenticateDoctor(String username, String password) {
-        return doctorRepository.find(username)
+    public AuthenticationResponse authenticateDoctor(String email, String password) {
+        return doctorRepository.find(email)
                 .filter(doctor -> passwordEncoder.matches(password, doctor.getPasswordHash()))
                 .map(this::getSuccessAuthResponse)
                 .orElseGet(AuthenticationResponse::failure);
@@ -27,6 +27,6 @@ public class DoctorAuthProvider {
 
     private AuthenticationResponse getSuccessAuthResponse(DoctorEntity doctor) {
         return AuthenticationResponse.success(
-                doctor.getUsername(), List.of(SecurityRoles.DOCTOR), Map.of(DOCTOR_ID_ATTRIBUTE, doctor.getId()));
+                doctor.getEmail(), List.of(SecurityRoles.DOCTOR), Map.of(DOCTOR_ID_ATTRIBUTE, doctor.getId()));
     }
 }

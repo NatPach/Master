@@ -24,6 +24,7 @@ import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
+import io.micronaut.security.authentication.AuthenticationRequest;
 import io.micronaut.security.authentication.Authenticator;
 import io.micronaut.security.authentication.UsernamePasswordCredentials;
 import io.micronaut.security.handlers.LoginHandler;
@@ -47,9 +48,11 @@ public abstract class BaseLoginController {
 
     @Post
     @SingleResult
-    public Publisher<MutableHttpResponse<?>> login(@NotNull @Valid @Body UsernamePasswordCredentials usernamePasswordCredentials, HttpRequest<?> request) {
+    public Publisher<MutableHttpResponse<?>> login(@NotNull @Valid @Body LoginRequest loginRequest, HttpRequest<?> request) {
         request.setAttribute(REQUEST_ATTRIBUTE, loginSource());
-        return Flux.from(authenticator.authenticate(request, usernamePasswordCredentials))
+        AuthenticationRequest<String, String> authenticationRequest = new UsernamePasswordCredentials(
+                loginRequest.getEmail(), loginRequest.getPassword());
+        return Flux.from(authenticator.authenticate(request, authenticationRequest))
                 .map(authenticationResponse -> {
                     if (authenticationResponse.isAuthenticated() && authenticationResponse.getAuthentication().isPresent()) {
                         Authentication authentication = authenticationResponse.getAuthentication().get();

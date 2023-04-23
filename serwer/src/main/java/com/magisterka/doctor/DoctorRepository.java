@@ -7,5 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface DoctorRepository extends CrudRepository<DoctorEntity, Long> {
-    Optional<DoctorEntity> find(String username);
+    Optional<DoctorEntity> find(String email);
 }

@@ -27,7 +27,7 @@ public class PatientEntity {
     private String lastName;
 
     @NotBlank
-    private String username;
+    private String email;
 
     @NotBlank
     private String passwordHash;
