@@ -1,6 +1,6 @@
 package com.magisterka.patient;
 
-import com.magisterka.interview.InterviewEntity;
+import com.magisterka.ankieta_wstepna.AnkietaWstepnaEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,5 +33,5 @@ public class PatientEntity {
     private String passwordHash;
 
     @OneToOne
-    private InterviewEntity interviewEntity;
+    private AnkietaWstepnaEntity ankietaWstepnaEntity;
 }

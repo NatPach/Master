@@ -1,7 +1,5 @@
 package com.magisterka.doctor;
 
-import com.magisterka.patient.PatientEntity;
-import com.magisterka.patient.RegisterPatientRequest;
 import com.magisterka.security.PasswordEncoder;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
@@ -20,8 +18,8 @@ public class RegisterDoctorController {
     private final PasswordEncoder passwordEncoder;
     private final DoctorRepository doctorRepository;
 
-    @Post("/patient/register")
-    public void registerPatient(@NotNull @Valid @Body RegisterPatientRequest request) {
+    @Post("/doctor/register")
+    public void registerDoctor(@NotNull @Valid @Body RegisterDoctorRequest request) {
         DoctorEntity entity = new DoctorEntity();
         entity.setEmail(request.getEmail());
         entity.setPasswordHash(passwordEncoder.encode(request.getPassword()));

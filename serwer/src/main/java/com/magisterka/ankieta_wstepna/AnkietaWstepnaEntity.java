@@ -1,4 +1,4 @@
-package com.magisterka.interview;
+package com.magisterka.ankieta_wstepna;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +12,7 @@ import javax.persistence.Id;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class InterviewEntity {
+public class AnkietaWstepnaEntity {
     @Id
     @GeneratedValue
     private Long id;

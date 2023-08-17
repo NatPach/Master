@@ -1,4 +1,4 @@
-package com.magisterka.interview;
+package com.magisterka.ankieta_wstepna;
 
 import io.micronaut.core.annotation.Introspected;
 import lombok.AllArgsConstructor;
@@ -13,13 +13,13 @@ import javax.validation.constraints.Positive;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Interview {
+public class AnkietaWstepna {
     @NotNull
     @Positive
-    private Double weight;
+    private Double waga;
     @NotNull
     @Positive
-    private Double height;
+    private Double wzrost;
     @NotBlank
-    private String bloodType;
+    private String grupaKrwi;
 }
