@@ -1,6 +1,9 @@
 micronaut:
   application:
     name: magisterka
+  server:
+    cors:
+      enabled: true
   security:
     authentication: bearer
     token:

@@ -1,5 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import LoggedUser from "@/security/logged-user";
 
 export const useSessionStore = defineStore('session', () => {
   const loggedUser = ref(null)
@@ -7,6 +8,9 @@ export const useSessionStore = defineStore('session', () => {
   // function increment() {
   //   count.value++
   // }
+  function isUserLogged() {
+    return loggedUser != null;
+  }
 
-  return { loggedUser }
+  return { loggedUser, isUserLogged }
 })

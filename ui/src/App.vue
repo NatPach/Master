@@ -1,15 +1,9 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import { useSessionStore } from '@/stores/session'
-
-const sessionStore = useSessionStore()
+import AuthView from "@/views/AuthView.vue";
 </script>
 
 <template>
-  <template v-if="sessionStore.loggedUser != null">
-    zalogowany
-  </template>
-  <template v-else>
-    nie zalogowany
-  </template>
+  <div class="container">
+    <AuthView/>
+  </div>
 </template>
