@@ -21,14 +21,14 @@ public class PatientAnkietaWstepnaController {
     @Inject
     private AnkietaWstepnaRepository ankietaWstepnaRepository;
 
-    @Get("/patient/ankieta-wstepna")
+    @Get("/ankieta-wstepna")
     public Optional<AnkietaWstepna> getPatientInterview() {
         long patientId = authAttributesProvider.getPatientId();
         return ankietaWstepnaRepository.findByPatientId(patientId)
                 .map(entity -> new AnkietaWstepna(entity.getWeight(), entity.getHeight(), entity.getBloodType()));
     }
 
-    @Put("/patient/ankieta-wstepna")
+    @Put("/ankieta-wstepna")
     public AnkietaWstepna putPatientInterview(@NotNull @Valid @Body AnkietaWstepna ankietaWstepna) {
         long patientId = authAttributesProvider.getPatientId();
         AnkietaWstepnaEntity entity = new AnkietaWstepnaEntity(null, patientId, ankietaWstepna.getWaga(), ankietaWstepna.getWzrost(), ankietaWstepna.getGrupaKrwi());

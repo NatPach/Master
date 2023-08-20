@@ -16,7 +16,7 @@ public class DoctorAnkietaWstepnaController {
     @Inject
     private AnkietaWstepnaRepository ankietaWstepnaRepository;
 
-    @Get("/doctor/patients/{patientId}/ankieta-wstepna")
+    @Get("/patients/{patientId}/ankieta-wstepna")
     public Optional<AnkietaWstepna> getPatientAnkietaWstepna(@NotNull @PathVariable Long patientId) {
         return ankietaWstepnaRepository.findByPatientId(patientId)
                 .map(entity -> new AnkietaWstepna(entity.getWeight(), entity.getHeight(), entity.getBloodType()));

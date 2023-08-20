@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "datatables.net-vue3": "^2.1.3"
+  }
+}

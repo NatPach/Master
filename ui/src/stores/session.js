@@ -9,8 +9,16 @@ export const useSessionStore = defineStore('session', () => {
   //   count.value++
   // }
   function isUserLogged() {
-    return loggedUser != null;
+    return this.loggedUser != null;
   }
 
-  return { loggedUser, isUserLogged }
+  function logout() {
+    this.loggedUser = null;
+  }
+
+  function accessToken() {
+    return this.loggedUser.accessToken;
+  }
+
+  return { loggedUser, isUserLogged, logout, accessToken }
 })
