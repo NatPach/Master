@@ -9,6 +9,7 @@ import io.micronaut.http.annotation.Put;
 import io.micronaut.security.annotation.Secured;
 import jakarta.inject.Inject;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
@@ -29,6 +30,7 @@ public class PatientAnkietaWstepnaController {
     }
 
     @Put("/ankieta-wstepna")
+    @Transactional
     public AnkietaWstepna putPatientInterview(@NotNull @Valid @Body AnkietaWstepna ankietaWstepna) {
         long patientId = authAttributesProvider.getPatientId();
         AnkietaWstepnaEntity entity = new AnkietaWstepnaEntity(null, patientId, ankietaWstepna.getWaga(), ankietaWstepna.getWzrost(), ankietaWstepna.getGrupaKrwi());
