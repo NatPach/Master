@@ -34,6 +34,7 @@ export default {
           .catch(error => {
             if (error.response.status === 401) {
               this.errorMessage = "Błędny email lub hasło.";
+              return;
             }
             console.log("Błąd podczas logowania.", error)
           });
