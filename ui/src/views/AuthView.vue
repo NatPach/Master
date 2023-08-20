@@ -1,11 +1,13 @@
 <script>
 import LoginForm from "@/components/LoginForm.vue";
+import DoctorView from "@/views/DoctorView.vue";
 import {useSessionStore} from "@/stores/session";
 import {computed} from "vue";
 
 export default {
   components: {
-    LoginForm
+    LoginForm,
+    DoctorView
   },
   data: function() {
     return {
@@ -29,7 +31,7 @@ export default {
 <template>
   <template v-if="isUserLogged()">
     <template v-if="loggedUser.isDoctor()">
-      zalogowany jako lekarz
+      <DoctorView/>
     </template>
     <template v-else>
       zalogowany jako pacjent
