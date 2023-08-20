@@ -7,11 +7,7 @@ export default {
     return {
       items: [],
       selectedPatientId: null,
-      ankietaWstepna: {
-        waga: "",
-        wzrost: "",
-        grupaKrwi: ""
-      }
+      ankietaWstepna: null
     };
   },
   setup() {
@@ -30,6 +26,7 @@ export default {
   methods: {
     onPatientClick: function (item) {
       const patientId = item.id;
+      this.selectedPatientId = patientId;
       this.axios.get(`${config.serverUrl}/patients/${patientId}/ankieta-wstepna`, { headers: {"Authorization" : `Bearer ${this.sessionStore.accessToken()}`} })
           .then(response => {
             this.ankietaWstepna = response.data;
@@ -44,11 +41,7 @@ export default {
           });
     },
     clearPatientDetails: function () {
-      this.ankietaWstepna = {
-        waga: "",
-        wzrost: "",
-        grupaKrwi: ""
-      };
+      this.ankietaWstepna = null;
     }
   },
   mounted() {
@@ -74,23 +67,33 @@ export default {
 
   <div class="border rounded p-3">
     <div class="h4 mb-3">Szczegóły pacjenta</div>
-    <div class="mb-3 row">
-      <label for="staticWeight" class="col-sm-2 col-form-label">Waga</label>
-      <div class="col-sm-10">
-        <input type="text" readonly class="form-control-plaintext" id="staticWeight" :value="ankietaWstepna.waga">
+    <template v-if="ankietaWstepna !== null">
+      <div class="mb-3 row">
+        <label for="staticWeight" class="col-sm-2 col-form-label">Waga</label>
+        <div class="col-sm-10">
+          <input type="text" readonly class="form-control-plaintext" id="staticWeight" :value="ankietaWstepna.waga">
+        </div>
       </div>
-    </div>
-    <div class="mb-3 row">
-      <label for="staticHeight" class="col-sm-2 col-form-label">Wzrost</label>
-      <div class="col-sm-10">
-        <input type="text" readonly class="form-control-plaintext" id="staticHeight" :value="ankietaWstepna.wzrost">
+      <div class="mb-3 row">
+        <label for="staticHeight" class="col-sm-2 col-form-label">Wzrost</label>
+        <div class="col-sm-10">
+          <input type="text" readonly class="form-control-plaintext" id="staticHeight" :value="ankietaWstepna.wzrost">
+        </div>
       </div>
-    </div>
-    <div class="mb-3 row">
-      <label for="staticBloodType" class="col-sm-2 col-form-label">Grupa krwi</label>
-      <div class="col-sm-10">
-        <input type="text" readonly class="form-control-plaintext" id="staticBloodType" :value="ankietaWstepna.grupaKrwi">
+      <div class="mb-3 row">
+        <label for="staticBloodType" class="col-sm-2 col-form-label">Grupa krwi</label>
+        <div class="col-sm-10">
+          <input type="text" readonly class="form-control-plaintext" id="staticBloodType" :value="ankietaWstepna.grupaKrwi">
+        </div>
       </div>
-    </div>
+    </template>
+    <template v-else>
+      <template v-if="selectedPatientId !== null">
+        Pacjent o id {{ selectedPatientId }} nie wypełnił jeszcze ankiety.
+      </template>
+      <template v-else>
+        Proszę wybrać pacjenta.
+      </template>
+    </template>
   </div>
 </template>
