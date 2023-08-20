@@ -25,6 +25,6 @@ public class DoctorAnkietaCyklicznaController {
     }
 
     private AnkietaCykliczna mapFromEntity(AnkietaCyklicznaEntity entity) {
-        return new AnkietaCykliczna(entity.getTetno(), entity.getSamopoczucie());
+        return new AnkietaCykliczna(entity.getTetno(), entity.getSamopoczucie(), entity.getCreatedAt());
     }
 }

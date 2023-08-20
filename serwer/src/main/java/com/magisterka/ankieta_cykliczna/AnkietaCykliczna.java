@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.time.Instant;
 
 @Introspected
 @Data
@@ -16,4 +17,5 @@ public class AnkietaCykliczna {
     private Integer tetno;
     @NotNull
     private Samopoczucie samopoczucie;
+    private Instant createdAt;
 }

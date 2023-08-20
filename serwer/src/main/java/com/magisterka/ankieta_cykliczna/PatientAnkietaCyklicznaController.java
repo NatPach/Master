@@ -11,6 +11,7 @@ import jakarta.inject.Inject;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 import java.util.List;
 
 @Secured(SecurityRoles.PATIENT)
@@ -33,11 +34,12 @@ public class PatientAnkietaCyklicznaController {
     @Post
     public void putPatientAnkietaCykliczna(@NotNull @Valid @Body AnkietaCykliczna ankietaCykliczna) {
         long patientId = authAttributesProvider.getPatientId();
-        AnkietaCyklicznaEntity entity = new AnkietaCyklicznaEntity(null, patientId, ankietaCykliczna.getTetno(), ankietaCykliczna.getSamopoczucie());
+        Instant createdAt = Instant.now();
+        AnkietaCyklicznaEntity entity = new AnkietaCyklicznaEntity(null, patientId, ankietaCykliczna.getTetno(), ankietaCykliczna.getSamopoczucie(), createdAt);
         ankietaCyklicznaRepository.save(entity);
     }
 
     private AnkietaCykliczna mapFromEntity(AnkietaCyklicznaEntity entity) {
-        return new AnkietaCykliczna(entity.getTetno(), entity.getSamopoczucie());
+        return new AnkietaCykliczna(entity.getTetno(), entity.getSamopoczucie(), entity.getCreatedAt());
     }
 }

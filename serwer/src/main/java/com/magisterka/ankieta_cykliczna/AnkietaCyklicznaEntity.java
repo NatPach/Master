@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.time.Instant;
 
 @Entity(name = "ankieta_cykliczna")
 @Data
@@ -19,4 +20,5 @@ public class AnkietaCyklicznaEntity {
     private Long patientId;
     private Integer tetno;
     private Samopoczucie samopoczucie;
+    private Instant createdAt;
 }
