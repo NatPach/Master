@@ -1,9 +1,0 @@
-POST http://localhost:8080/patient/register
-Content-Type: application/json
-
-{
-  "email": "nowy@gmail.com",
-  "password": "test",
-  "firstName": "Inny",
-  "lastName": "Pacjent"
-}
