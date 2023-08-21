@@ -44,7 +44,7 @@ export default {
           .then(response => {
             this.items = (response.data ?? []).map(value => {
               value.samopoczucie = value.samopoczucie.toLowerCase().replace('_', ' ');
-              value.createdAt = new Date(value.createdAt).toLocaleString();
+              value.createdAt = new Date(value.createdAt * 1000).toLocaleString();
               return value;
             });
           })
