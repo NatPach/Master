@@ -5,22 +5,29 @@ import config from "@/config";
 export default {
   data: function() {
     return {
-      items: [],
+      patientList: [],
       selectedPatientId: null,
-      ankietaWstepna: null
+      ankietaWstepna: null,
+      ankietaCyklicznaList: null
     };
   },
   setup() {
-    const headers = [
+    const patientHeaders = [
       { text: "Id", value: "id" },
       { text: "Imię", value: "firstName", sortable: true },
       { text: "Nazwisko", value: "lastName", sortable: true },
       { text: "Email", value: "email", sortable: true }
     ];
+    const ankietaCyklicznaHeaders = [
+      { text: "Tętno", value: "tetno" },
+      { text: "Samopoczucie", value: "samopoczucie" },
+      { text: "Data pomiaru", value: "createdAt", sortable: true }
+    ];
     const sessionStore = useSessionStore();
     return {
-      headers,
-      sessionStore
+      patientHeaders,
+      sessionStore,
+      ankietaCyklicznaHeaders
     };
   },
   methods: {
@@ -39,6 +46,17 @@ export default {
             }
             console.log(`Błąd podczas pobierania ankiety wstepnej pacjenta o id = ${patientId}.`, error)
           });
+      this.axios.get(`${config.serverUrl}/patients/${patientId}/ankieta-cykliczna`, { headers: {"Authorization" : `Bearer ${this.sessionStore.accessToken()}`} })
+          .then(response => {
+            this.ankietaCyklicznaList = response.data.map(value => {
+              value.samopoczucie = value.samopoczucie.toLowerCase().replace('_', ' ');
+              value.createdAt = new Date(value.createdAt).toLocaleString();
+              return value;
+            });
+          })
+          .catch(error => {
+            console.log(`Błąd podczas pobierania ankiet cyklicznych pacjenta o id = ${patientId}.`, error)
+          });
     },
     clearPatientDetails: function () {
       this.ankietaWstepna = null;
@@ -47,7 +65,7 @@ export default {
   mounted() {
     this.axios.get(`${config.serverUrl}/patients`, { headers: {"Authorization" : `Bearer ${this.sessionStore.accessToken()}`} })
         .then(response => {
-          this.items = response.data;
+          this.patientList = response.data;
         })
         .catch(error => {
           console.log("Błąd podczas pobierania pacjentów.", error)
@@ -59,8 +77,8 @@ export default {
 <template>
   <div class="mb-5">
     <EasyDataTable
-        :headers="headers"
-        :items="items"
+        :headers="patientHeaders"
+        :items="patientList"
         @click-row="onPatientClick"
     />
   </div>
@@ -86,6 +104,11 @@ export default {
           <input type="text" readonly class="form-control-plaintext" id="staticBloodType" :value="ankietaWstepna.grupaKrwi">
         </div>
       </div>
+      <div class="h5 mb-3">Ankiety cykliczne</div>
+      <EasyDataTable
+          :headers="ankietaCyklicznaHeaders"
+          :items="ankietaCyklicznaList"
+      />
     </template>
     <template v-else>
       <template v-if="selectedPatientId !== null">
