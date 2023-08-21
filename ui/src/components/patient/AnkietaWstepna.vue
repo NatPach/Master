@@ -18,7 +18,6 @@ export default {
   },
   methods: {
     save: function () {
-      console.log(this);
       const data = {
         waga: this.waga ? this.waga : null,
         wzrost: this.wzrost ? this.wzrost : null,
