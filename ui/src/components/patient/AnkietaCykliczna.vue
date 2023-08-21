@@ -42,7 +42,7 @@ export default {
     refreshList: function () {
       this.axios.get(`${config.serverUrl}/ankieta-cykliczna`, { headers: {"Authorization" : `Bearer ${this.sessionStore.accessToken()}`} })
           .then(response => {
-            this.items = response.data.map(value => {
+            this.items = (response.data ?? []).map(value => {
               value.samopoczucie = value.samopoczucie.toLowerCase().replace('_', ' ');
               value.createdAt = new Date(value.createdAt).toLocaleString();
               return value;

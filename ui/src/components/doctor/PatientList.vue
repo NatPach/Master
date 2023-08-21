@@ -8,7 +8,7 @@ export default {
       patientList: [],
       selectedPatientId: null,
       ankietaWstepna: null,
-      ankietaCyklicznaList: null
+      ankietaCyklicznaList: []
     };
   },
   setup() {
@@ -48,7 +48,7 @@ export default {
           });
       this.axios.get(`${config.serverUrl}/patients/${patientId}/ankieta-cykliczna`, { headers: {"Authorization" : `Bearer ${this.sessionStore.accessToken()}`} })
           .then(response => {
-            this.ankietaCyklicznaList = response.data.map(value => {
+            this.ankietaCyklicznaList = (response.data ?? []).map(value => {
               value.samopoczucie = value.samopoczucie.toLowerCase().replace('_', ' ');
               value.createdAt = new Date(value.createdAt).toLocaleString();
               return value;
@@ -65,7 +65,7 @@ export default {
   mounted() {
     this.axios.get(`${config.serverUrl}/patients`, { headers: {"Authorization" : `Bearer ${this.sessionStore.accessToken()}`} })
         .then(response => {
-          this.patientList = response.data;
+          this.patientList = response.data ?? [];
         })
         .catch(error => {
           console.log("Błąd podczas pobierania pacjentów.", error)
