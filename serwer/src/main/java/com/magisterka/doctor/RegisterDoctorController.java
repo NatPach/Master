@@ -20,11 +20,12 @@ public class RegisterDoctorController {
 
     @Post("/doctor/register")
     public void registerDoctor(@NotNull @Valid @Body RegisterDoctorRequest request) {
-        DoctorEntity entity = new DoctorEntity();
-        entity.setEmail(request.getEmail());
-        entity.setPasswordHash(passwordEncoder.encode(request.getPassword()));
-        entity.setFirstName(request.getFirstName());
-        entity.setLastName(request.getLastName());
+        DoctorEntity entity = new DoctorEntity(
+                null,
+                request.getFirstName(),
+                request.getLastName(),
+                request.getEmail(),
+                passwordEncoder.encode(request.getPassword()));
         doctorRepository.save(entity);
     }
 }

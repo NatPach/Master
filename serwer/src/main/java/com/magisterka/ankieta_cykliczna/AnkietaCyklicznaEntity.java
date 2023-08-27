@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.Instant;
 
 @Entity(name = "ankieta_cykliczna")
@@ -19,6 +17,7 @@ public class AnkietaCyklicznaEntity {
     private Long id;
     private Long patientId;
     private Integer tetno;
+    @Enumerated(EnumType.STRING)
     private Samopoczucie samopoczucie;
     private Instant createdAt;
 }

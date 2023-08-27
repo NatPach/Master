@@ -20,11 +20,15 @@ public class RegisterPatientController {
 
     @Post("/patient/register")
     public void registerPatient(@NotNull @Valid @Body RegisterPatientRequest request) {
-        PatientEntity entity = new PatientEntity();
-        entity.setEmail(request.getEmail());
-        entity.setPasswordHash(passwordEncoder.encode(request.getPassword()));
-        entity.setFirstName(request.getFirstName());
-        entity.setLastName(request.getLastName());
+        PatientEntity entity = new PatientEntity(
+                null,
+                request.getFirstName(),
+                request.getMiddleName(),
+                request.getLastName(),
+                request.getPesel(),
+                request.getEmail(),
+                passwordEncoder.encode(request.getPassword()),
+                request.getLekarzProwadzacyId());
         patientRepository.save(entity);
     }
 }

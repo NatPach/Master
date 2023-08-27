@@ -1,6 +1,7 @@
 package com.magisterka.ankieta_wstepna;
 
 import io.micronaut.core.annotation.Introspected;
+import io.micronaut.core.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,5 +22,11 @@ public class AnkietaWstepna {
     @Positive
     private Double wzrost;
     @NotBlank
-    private String grupaKrwi;
+    private BloodType grupaKrwi;
+    @NotBlank
+    private TrybZycia trybZycia;
+    @Nullable
+    private String przyjmowaneLeki;
+    @Nullable
+    private String alergie;
 }

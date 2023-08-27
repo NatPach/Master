@@ -1,6 +1,7 @@
 package com.magisterka.patient;
 
 import io.micronaut.core.annotation.Introspected;
+import io.micronaut.core.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,12 @@ public class RegisterPatientRequest {
     private String password;
     @NotBlank
     private String firstName;
+    @Nullable
+    private String middleName;
     @NotBlank
     private String lastName;
+    @NotBlank
+    private String pesel;
+    @Nullable
+    private Long lekarzProwadzacyId;
 }

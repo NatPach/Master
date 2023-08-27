@@ -1,5 +1,5 @@
 create table `doctor` (
-    id bigint not null primary key,
+    id bigint not null auto_increment primary key,
     first_name varchar(127) not null,
     last_name varchar(127) not null,
     email varchar(127) not null,

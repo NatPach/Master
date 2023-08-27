@@ -1,14 +1,14 @@
 package com.magisterka.patient;
 
-import com.magisterka.ankieta_wstepna.AnkietaWstepnaEntity;
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 
 @Entity(name = "patient")
@@ -23,8 +23,16 @@ public class PatientEntity {
     @NotBlank
     private String firstName;
 
+    @Nullable
+    private String middleName;
+
     @NotBlank
     private String lastName;
+
+    @NotBlank
+    private String pesel;
+
+    // todo adres
 
     @NotBlank
     private String email;
@@ -32,6 +40,7 @@ public class PatientEntity {
     @NotBlank
     private String passwordHash;
 
-    @OneToOne
-    private AnkietaWstepnaEntity ankietaWstepnaEntity;
+    @Column(name = "lekarz_prowadzacy_id")
+    @Nullable
+    private Long lekarzProwadzacyId;
 }

@@ -26,21 +26,21 @@ public class PatientAnkietaWstepnaController {
     public Optional<AnkietaWstepna> getPatientInterview() {
         long patientId = authAttributesProvider.getPatientId();
         return ankietaWstepnaRepository.findByPatientId(patientId)
-                .map(entity -> new AnkietaWstepna(entity.getWeight(), entity.getHeight(), entity.getBloodType()));
+                .map(entity -> new AnkietaWstepna(entity.getWeight(), entity.getHeight(), entity.getBloodType(), entity.getTrybZycia(), entity.getPrzyjmowaneLeki(), entity.getAlergie()));
     }
 
     @Put("/ankieta-wstepna")
     @Transactional
     public AnkietaWstepna putPatientInterview(@NotNull @Valid @Body AnkietaWstepna ankietaWstepna) {
         long patientId = authAttributesProvider.getPatientId();
-        AnkietaWstepnaEntity entity = new AnkietaWstepnaEntity(null, patientId, ankietaWstepna.getWaga(), ankietaWstepna.getWzrost(), ankietaWstepna.getGrupaKrwi());
+        AnkietaWstepnaEntity entity = new AnkietaWstepnaEntity(null, patientId, ankietaWstepna.getWaga(), ankietaWstepna.getWzrost(), ankietaWstepna.getGrupaKrwi(), ankietaWstepna.getTrybZycia(), ankietaWstepna.getPrzyjmowaneLeki(), ankietaWstepna.getAlergie());
         return ankietaWstepnaRepository.findByPatientId(patientId)
                 .map(existing -> {
                     entity.setId(existing.getId());
                     return ankietaWstepnaRepository.update(entity);
                 })
                 .or(() -> Optional.of(ankietaWstepnaRepository.save(entity)))
-                .map(value -> new AnkietaWstepna(value.getWeight(), value.getHeight(), value.getBloodType()))
+                .map(value -> new AnkietaWstepna(value.getWeight(), value.getHeight(), value.getBloodType(), value.getTrybZycia(), value.getPrzyjmowaneLeki(), value.getAlergie()))
                 .orElseThrow();
     }
 }
