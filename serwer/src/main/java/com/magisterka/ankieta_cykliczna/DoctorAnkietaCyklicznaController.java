@@ -29,7 +29,7 @@ public class DoctorAnkietaCyklicznaController {
     private AnkietaCykliczna mapFromEntity(AnkietaCyklicznaEntity entity) {
         return new AnkietaCykliczna(
                 entity.getTetno(),
-                entity.getSamopoczucie() == null ? null : Samopoczucie.valueOf(entity.getSamopoczucie()),
+                entity.getSamopoczucie(),
                 getUwagiZdrowotne(entity.getUwagiZdrowotne()),
                 entity.getInneUwagiZdrowotne(),
                 entity.getCreatedAt());

@@ -19,7 +19,7 @@ public class AnkietaCyklicznaEntity {
     private Long id;
     private Long patientId;
     private Integer tetno;
-    private String samopoczucie;
+    private Samopoczucie samopoczucie;
     private String uwagiZdrowotne;
     private String inneUwagiZdrowotne;
     private Instant createdAt;

@@ -9,7 +9,7 @@ VALUES (1, 'Tomek', 'Grzegorz', 'Pacjent', '96082600000', 'pacjent@gmail.com', '
 
 # seed ankieta wstepna
 INSERT INTO ankieta_wstepna (patient_id, weight, height, blood_type, tryb_zycia, przyjmowane_leki, alergie)
-VALUES (1, 93, 185,  '0 Rh+', 'aktywny', null, null);
+VALUES (1, 93, 185,  'ZERO_PLUS', 'AKTYWNY', null, null);
 
 # seed ankieta cykliczna
 INSERT INTO ankieta_cykliczna (patient_id, samopoczucie, tetno, uwagi_zdrowotne, inne_uwagi_zdrowotne, created_at)

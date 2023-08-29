@@ -42,7 +42,7 @@ public class PatientAnkietaCyklicznaController {
                 null,
                 patientId,
                 ankietaCykliczna.getTetno(),
-                ankietaCykliczna.getSamopoczucie().name(),
+                ankietaCykliczna.getSamopoczucie(),
                 ankietaCykliczna.getUwagiZdrowotne().stream().map(Enum::name).collect(Collectors.joining(",")),
                 ankietaCykliczna.getInneUwagiZdrowotne(),
                 createdAt);
@@ -52,7 +52,7 @@ public class PatientAnkietaCyklicznaController {
     private AnkietaCykliczna mapFromEntity(AnkietaCyklicznaEntity entity) {
         return new AnkietaCykliczna(
                 entity.getTetno(),
-                entity.getSamopoczucie() == null ? null : Samopoczucie.valueOf(entity.getSamopoczucie()),
+                entity.getSamopoczucie(),
                 getUwagiZdrowotne(entity.getUwagiZdrowotne()),
                 entity.getInneUwagiZdrowotne(),
                 entity.getCreatedAt());
