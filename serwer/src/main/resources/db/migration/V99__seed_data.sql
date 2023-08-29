@@ -12,8 +12,8 @@ INSERT INTO ankieta_wstepna (patient_id, weight, height, blood_type, tryb_zycia,
 VALUES (1, 93, 185,  '0 Rh+', 'aktywny', null, null);
 
 # seed ankieta cykliczna
-INSERT INTO ankieta_cykliczna (patient_id, samopoczucie, tetno, created_at)
-VALUES (1, 'gorsze', 190, '2023-08-20 10:57:50'),
-       (1, 'lepsze', 130, '2023-08-20 15:57:52'),
-       (1, 'bez zmian', 120, '2023-08-20 20:57:54'),
-       (1, 'bez zmian', 121, '2023-08-21 18:36:22');
+INSERT INTO ankieta_cykliczna (patient_id, samopoczucie, tetno, uwagi_zdrowotne, inne_uwagi_zdrowotne, created_at)
+VALUES (1, 'GORSZE', 190, 'SPADEK_WAGI,POTRZEBA_WIZYTY', 'bolaca glowa', '2023-08-20 10:57:50'),
+       (1, 'LEPSZE', 130, null, null, '2023-08-20 15:57:52'),
+       (1, 'BEZ_ZMIAN', 120, 'SPADEK_WAGI', null, '2023-08-20 20:57:54'),
+       (1, 'BEZ_ZMIAN', 121, null, null, '2023-08-21 18:36:22');
