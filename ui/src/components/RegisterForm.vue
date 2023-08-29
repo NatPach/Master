@@ -14,8 +14,10 @@ export default {
       successMessage: null,
       registerAs: 'doctor',
       firstName: null,
+      middleName: null,
       lastName: null,
       email: null,
+      pesel: null,
       password: null,
     };
   },
@@ -25,7 +27,9 @@ export default {
       this.successMessage = null;
       const data = {
         firstName: this.firstName,
+        middleName: this.middleName,
         lastName: this.lastName,
+        pesel: this.pesel,
         email: this.email,
         password: this.password
       };
@@ -63,10 +67,22 @@ export default {
     <label for="inputFirstName" class="form-label">Imię</label>
     <input type="text" class="form-control" id="inputFirstName" v-model="firstName">
   </div>
+  <template v-if="registerAs === 'patient'">
+    <div class="mb-3">
+      <label for="inputMiddleName" class="form-label">Drugie imię</label>
+      <input type="text" class="form-control" id="inputMiddleName" v-model="middleName">
+    </div>
+  </template>
   <div class="mb-3">
     <label for="inputLastName" class="form-label">Nazwisko</label>
     <input type="text" class="form-control" id="inputLastName" v-model="lastName">
   </div>
+  <template v-if="registerAs === 'patient'">
+    <div class="mb-3">
+      <label for="inputPesel" class="form-label">Pesel</label>
+      <input type="text" class="form-control" id="inputPesel" v-model="pesel">
+    </div>
+  </template>
   <div class="mb-3">
     <label for="inputEmail" class="form-label">Email</label>
     <input type="email" class="form-control" id="inputEmail" v-model="email">

@@ -27,6 +27,4 @@ public class RegisterPatientRequest {
     private String lastName;
     @NotBlank
     private String pesel;
-    @Nullable
-    private Long lekarzProwadzacyId;
 }

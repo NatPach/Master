@@ -14,7 +14,7 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 public class AnkietaWstepnaEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull

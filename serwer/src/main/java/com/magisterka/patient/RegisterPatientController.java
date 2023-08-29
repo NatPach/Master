@@ -28,7 +28,7 @@ public class RegisterPatientController {
                 request.getPesel(),
                 request.getEmail(),
                 passwordEncoder.encode(request.getPassword()),
-                request.getLekarzProwadzacyId());
+                null);
         patientRepository.save(entity);
     }
 }
