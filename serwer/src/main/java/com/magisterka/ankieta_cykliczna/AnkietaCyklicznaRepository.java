@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface AnkietaCyklicznaRepository extends CrudRepository<AnkietaCyklicznaEntity, Long> {
-    List<AnkietaCyklicznaEntity> findByPatientId(Long patientId);
+    List<AnkietaCyklicznaEntity> findByPatientIdOrderByCreatedAtDesc(Long patientId);
 }

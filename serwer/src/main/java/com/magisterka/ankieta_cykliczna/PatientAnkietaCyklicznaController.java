@@ -12,10 +12,7 @@ import jakarta.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Secured(SecurityRoles.PATIENT)
 @Controller("/ankieta-cykliczna")
@@ -28,7 +25,7 @@ public class PatientAnkietaCyklicznaController {
     @Get
     public List<AnkietaCykliczna> getPatientAnkietaCykliczna() {
         long patientId = authAttributesProvider.getPatientId();
-        return ankietaCyklicznaRepository.findByPatientId(patientId)
+        return ankietaCyklicznaRepository.findByPatientIdOrderByCreatedAtDesc(patientId)
                 .stream()
                 .map(this::mapFromEntity)
                 .toList();
@@ -43,7 +40,8 @@ public class PatientAnkietaCyklicznaController {
                 patientId,
                 ankietaCykliczna.getTetno(),
                 ankietaCykliczna.getSamopoczucie(),
-                ankietaCykliczna.getUwagiZdrowotne().stream().map(Enum::name).collect(Collectors.joining(",")),
+                ankietaCykliczna.getWaga(),
+                ankietaCykliczna.isPotrzebaWizyty(),
                 ankietaCykliczna.getInneUwagiZdrowotne(),
                 createdAt);
         ankietaCyklicznaRepository.save(entity);
@@ -53,17 +51,9 @@ public class PatientAnkietaCyklicznaController {
         return new AnkietaCykliczna(
                 entity.getTetno(),
                 entity.getSamopoczucie(),
-                getUwagiZdrowotne(entity.getUwagiZdrowotne()),
+                entity.getWaga(),
+                entity.isPotrzebaWizyty(),
                 entity.getInneUwagiZdrowotne(),
                 entity.getCreatedAt());
-    }
-
-    private List<UwagaZdrowotna> getUwagiZdrowotne(String uwagiZdrowotne) {
-        if (uwagiZdrowotne == null || uwagiZdrowotne.isBlank()) {
-            return Collections.emptyList();
-        }
-        return Stream.of(uwagiZdrowotne.split(","))
-                .map(UwagaZdrowotna::valueOf)
-                .toList();
     }
 }

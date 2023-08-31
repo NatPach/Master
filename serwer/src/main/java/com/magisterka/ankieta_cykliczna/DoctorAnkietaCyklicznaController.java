@@ -8,9 +8,7 @@ import io.micronaut.security.annotation.Secured;
 import jakarta.inject.Inject;
 
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Secured(SecurityRoles.DOCTOR)
 @Controller
@@ -20,7 +18,7 @@ public class DoctorAnkietaCyklicznaController {
 
     @Get("/patients/{patientId}/ankieta-cykliczna")
     public List<AnkietaCykliczna> getPatientAnkietaCykliczna(@PathVariable @NotNull Long patientId) {
-        return ankietaCyklicznaRepository.findByPatientId(patientId)
+        return ankietaCyklicznaRepository.findByPatientIdOrderByCreatedAtDesc(patientId)
                 .stream()
                 .map(this::mapFromEntity)
                 .toList();
@@ -30,17 +28,9 @@ public class DoctorAnkietaCyklicznaController {
         return new AnkietaCykliczna(
                 entity.getTetno(),
                 entity.getSamopoczucie(),
-                getUwagiZdrowotne(entity.getUwagiZdrowotne()),
+                entity.getWaga(),
+                entity.isPotrzebaWizyty(),
                 entity.getInneUwagiZdrowotne(),
                 entity.getCreatedAt());
-    }
-
-    private List<UwagaZdrowotna> getUwagiZdrowotne(String uwagiZdrowotne) {
-        if (uwagiZdrowotne == null || uwagiZdrowotne.isBlank()) {
-            return Collections.emptyList();
-        }
-        return Stream.of(uwagiZdrowotne.split(","))
-                .map(UwagaZdrowotna::valueOf)
-                .toList();
     }
 }

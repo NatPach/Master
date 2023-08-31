@@ -22,10 +22,6 @@ public class AnkietaWstepnaEntity {
 
     @Positive
     @NotNull
-    private Double weight;
-
-    @Positive
-    @NotNull
     private Double height;
 
     @Enumerated(EnumType.STRING)

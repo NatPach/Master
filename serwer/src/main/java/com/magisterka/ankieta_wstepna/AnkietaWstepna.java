@@ -17,9 +17,6 @@ import javax.validation.constraints.Positive;
 public class AnkietaWstepna {
     @NotNull
     @Positive
-    private Double waga;
-    @NotNull
-    @Positive
     private Double wzrost;
     @NotBlank
     private BloodType grupaKrwi;

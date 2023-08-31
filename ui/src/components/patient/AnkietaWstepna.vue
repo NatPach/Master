@@ -13,7 +13,6 @@ export default {
     return {
       grupyKrwi: [],
       trybyZycia: [],
-      waga: null,
       wzrost: null,
       grupaKrwi: null,
       trybZycia: null,
@@ -43,7 +42,6 @@ export default {
     initializeForm: function () {
       this.axios.get(`${config.serverUrl}/ankieta-wstepna`, { headers: {"Authorization" : `Bearer ${this.sessionStore.accessToken()}`} })
           .then(response => {
-            this.waga = response.data.waga;
             this.wzrost = response.data.wzrost;
             this.grupaKrwi = response.data.grupaKrwi;
             this.trybZycia = response.data.trybZycia;
@@ -60,7 +58,6 @@ export default {
     },
     save: function () {
       const data = {
-        waga: this.waga ? this.waga : null,
         wzrost: this.wzrost ? this.wzrost : null,
         grupaKrwi: this.grupaKrwi ? this.grupaKrwi : (this.grupaKrwi === 0 ? 0 : null),
         trybZycia: this.trybZycia ? this.trybZycia : null,
@@ -79,12 +76,6 @@ export default {
 
 <template>
   <div class="border rounded p-3">
-    <div class="mb-3 row">
-      <label for="inputWeight" class="col-sm-2 col-form-label">Waga</label>
-      <div class="col-sm-10">
-        <input type="number" class="form-control" id="inputWeight" v-model="waga">
-      </div>
-    </div>
     <div class="mb-3 row">
       <label for="inputHeight" class="col-sm-2 col-form-label">Wzrost</label>
       <div class="col-sm-10">

@@ -19,6 +19,6 @@ public class DoctorAnkietaWstepnaController {
     @Get("/patients/{patientId}/ankieta-wstepna")
     public Optional<AnkietaWstepna> getPatientAnkietaWstepna(@NotNull @PathVariable Long patientId) {
         return ankietaWstepnaRepository.findByPatientId(patientId)
-                .map(entity -> new AnkietaWstepna(entity.getWeight(), entity.getHeight(), entity.getBloodType(), entity.getTrybZycia(), entity.getPrzyjmowaneLeki(), entity.getAlergie()));
+                .map(entity -> new AnkietaWstepna(entity.getHeight(), entity.getBloodType(), entity.getTrybZycia(), entity.getPrzyjmowaneLeki(), entity.getAlergie()));
     }
 }
