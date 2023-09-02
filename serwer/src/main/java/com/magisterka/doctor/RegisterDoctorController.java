@@ -25,6 +25,7 @@ public class RegisterDoctorController {
                 request.getFirstName(),
                 request.getLastName(),
                 request.getEmail(),
+                request.getPhone(),
                 passwordEncoder.encode(request.getPassword()));
         doctorRepository.save(entity);
     }

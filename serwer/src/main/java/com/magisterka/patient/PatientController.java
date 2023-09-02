@@ -46,6 +46,7 @@ public class PatientController {
                 .firstName(entity.getFirstName())
                 .middleName(entity.getMiddleName())
                 .lastName(entity.getLastName())
+                .phone(entity.getPhone())
                 .pesel(entity.getPesel())
                 .build();
     }

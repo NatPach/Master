@@ -29,6 +29,9 @@ public class PatientEntity {
     @NotBlank
     private String pesel;
 
+    @NotBlank
+    private String phone;
+
     // todo adres
 
     @NotBlank

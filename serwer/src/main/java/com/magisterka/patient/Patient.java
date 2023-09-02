@@ -10,6 +10,7 @@ public class Patient {
     String firstName;
     String middleName;
     String lastName;
+    String phone;
     String email;
     String pesel;
 }

@@ -22,4 +22,6 @@ public class RegisterDoctorRequest {
     private String firstName;
     @NotBlank
     private String lastName;
+    @NotBlank
+    private String phone;
 }

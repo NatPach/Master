@@ -26,6 +26,7 @@ public class RegisterPatientController {
                 request.getMiddleName(),
                 request.getLastName(),
                 request.getPesel(),
+                request.getPhone(),
                 request.getEmail(),
                 passwordEncoder.encode(request.getPassword()),
                 null);

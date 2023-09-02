@@ -29,5 +29,8 @@ public class DoctorEntity {
     private String email;
 
     @NotBlank
+    private String phone;
+
+    @NotBlank
     private String passwordHash;
 }
