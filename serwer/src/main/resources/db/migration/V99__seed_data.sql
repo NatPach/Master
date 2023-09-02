@@ -16,6 +16,11 @@ VALUES (1, 185,  'ZERO_PLUS', 'AKTYWNY', 'claritine', 'orzechy ziemne, pyłki');
 # seed ankieta cykliczna
 INSERT INTO ankieta_cykliczna (patient_id, samopoczucie, tetno, waga, potrzeba_wizyty, inne_uwagi_zdrowotne, created_at)
 VALUES (1, 'GORSZE', 190, 93, false, 'bolaca glowa', '2023-08-20 10:57:50'),
-       (1, 'LEPSZE', 130, 94, false, null, '2023-08-20 15:57:52'),
-       (1, 'BEZ_ZMIAN', 120, 93, false, null, '2023-08-20 20:57:54'),
-       (1, 'BEZ_ZMIAN', 121, 93, false, null, '2023-08-21 18:36:22');
+       (1, 'BEZ_ZMIAN', 130, 94, false, null, '2023-08-20 15:57:52'),
+       (1, 'GORSZE', 120, 93, false, null, '2023-08-20 20:57:54'),
+       (1, 'GORSZE', 121, 93, false, null, '2023-08-21 18:36:22');
+
+# seed potrzeba wizyty
+INSERT INTO potrzeba_wizyty (context, patient_id, details)
+VALUES ('doctor:1', 1, 'spadek wagi'),
+       ('patient:1', 1, 'spadek wagi');

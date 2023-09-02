@@ -1,5 +1,6 @@
 package com.magisterka.ankieta_cykliczna;
 
+import com.magisterka.potrzeba_wizyty.PotrzebaWizytyService;
 import com.magisterka.security.AuthAttributesProvider;
 import com.magisterka.security.SecurityRoles;
 import io.micronaut.http.annotation.Body;
@@ -21,6 +22,8 @@ public class PatientAnkietaCyklicznaController {
     private AuthAttributesProvider authAttributesProvider;
     @Inject
     private AnkietaCyklicznaRepository ankietaCyklicznaRepository;
+    @Inject
+    private PotrzebaWizytyService potrzebaWizytyService;
 
     @Get
     public List<AnkietaCykliczna> getPatientAnkietaCykliczna() {
@@ -35,7 +38,7 @@ public class PatientAnkietaCyklicznaController {
     public void putPatientAnkietaCykliczna(@NotNull @Valid @Body AnkietaCykliczna ankietaCykliczna) {
         long patientId = authAttributesProvider.getPatientId();
         Instant createdAt = Instant.now();
-        AnkietaCyklicznaEntity entity = new AnkietaCyklicznaEntity(
+        AnkietaCyklicznaEntity entity = ankietaCyklicznaRepository.save(new AnkietaCyklicznaEntity(
                 null,
                 patientId,
                 ankietaCykliczna.getTetno(),
@@ -43,8 +46,8 @@ public class PatientAnkietaCyklicznaController {
                 ankietaCykliczna.getWaga(),
                 ankietaCykliczna.isPotrzebaWizyty(),
                 ankietaCykliczna.getInneUwagiZdrowotne(),
-                createdAt);
-        ankietaCyklicznaRepository.save(entity);
+                createdAt));
+        potrzebaWizytyService.stworzPotrzebeWizytyJesliPotrzeba(entity);
     }
 
     private AnkietaCykliczna mapFromEntity(AnkietaCyklicznaEntity entity) {
