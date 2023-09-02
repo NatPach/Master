@@ -25,6 +25,7 @@ export default {
       waga: null,
       potrzebaWizyty: false,
       inneUwagiZdrowotne: null,
+      anomalie: null,
 
       data: []
     };
@@ -39,9 +40,12 @@ export default {
         inneUwagiZdrowotne: this.inneUwagiZdrowotne ? this.inneUwagiZdrowotne : null
       };
       this.axios.post(`${config.serverUrl}/ankieta-cykliczna`, data, { headers: {"Authorization" : `Bearer ${this.sessionStore.accessToken()}`} })
-          .finally(() => {
+          .then(response => {
             this.clearForm();
             this.refreshList();
+            if (response.data.details) {
+              this.anomalie = response.data.details;
+            }
           });
     },
     clearForm: function () {
@@ -50,6 +54,7 @@ export default {
       this.waga = null;
       this.potrzebaWizyty = false;
       this.inneUwagiZdrowotne = null;
+      this.anomalie = null;
     },
     initializeSamopoczucia: function () {
       return this.axios.get(`${config.serverUrl}/samopoczucia`, { headers: {"Authorization" : `Bearer ${this.sessionStore.accessToken()}`} })
@@ -114,6 +119,14 @@ export default {
         <input type="text" class="form-control" id="inputInneUwagiZdrowotne" v-model="inneUwagiZdrowotne">
       </div>
     </div>
+    <template v-if="anomalie">
+      <div class="mb-3">
+        <div class="alert alert-danger" role="alert">
+          <h4 class="alert-heading">Wymagana wizyta u lekarza!</h4>
+          <p>Na podstawie ankiety cyklicznej wyliczono, że potrzebujesz konsultacji z lekarzem prowadzącym. Wykryte anomalie: <b>{{ anomalie }}.</b></p>
+        </div>
+      </div>
+    </template>
     <div class="text-end">
       <input class="btn btn-primary" type="button" value="Dodaj" @click="save">
     </div>

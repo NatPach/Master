@@ -61,6 +61,11 @@ export default {
           .catch(error => {
             console.log("Błąd podczas pobierania pacjentów.", error)
           });
+    },
+    backToList: function () {
+      this.data = [];
+      this.loadPatientsPotrzebujacychWizyty();
+      this.selectedPatient = null;
     }
   },
   mounted() {
@@ -72,16 +77,26 @@ export default {
 
 <template>
   <template v-if="selectedPatient === null">
-    <div class="h4 mb-3">
-      Pacjenci potrzebujący wizyt
-    </div>
-    <div class="mb-5">
-      <Table :data="data" :columns="columns" :on-row-click="onPatientClick"/>
-    </div>
+    <template v-if="data.length === 0">
+      <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Dobra wiadomość!</h4>
+        <p>Lista pacjentów potrzebujących wizyty jest pusta!</p>
+        <hr>
+        <p class="mb-0">Gdy tylko którykolwiek pacjent będzie potrzebował wizyty pojawi się na liście w tym miejscu.</p>
+      </div>
+    </template>
+    <template v-else>
+      <div class="h4 mb-3">
+        Pacjenci potrzebujący wizyt
+      </div>
+      <div class="mb-5">
+        <Table :data="data" :columns="columns" :on-row-click="onPatientClick"/>
+      </div>
+    </template>
   </template>
   <template v-else>
     <div class="mb-3">
-      <button type="button" class="btn btn-outline-primary" @click="() => selectedPatient = null">Wróć do listy pacjenów potrzebujących wizyty</button>
+      <button type="button" class="btn btn-outline-primary" @click="backToList">Wróć do listy pacjenów potrzebujących wizyty</button>
     </div>
     <PatientDetails :patient="selectedPatient"/>
   </template>

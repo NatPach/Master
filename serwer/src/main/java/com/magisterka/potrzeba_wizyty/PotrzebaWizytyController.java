@@ -25,7 +25,7 @@ public class PotrzebaWizytyController {
         Long doctorId = authAttributesProvider.getDoctorId();
         return service.getListaPacjentowPotrzebujacychWizyty(doctorId)
                 .stream()
-                .map(patientId -> new PotrzebaWizyty(null, null, patientId))
+                .map(patientId -> new PotrzebaWizyty(null, patientId))
                 .toList();
     }
 

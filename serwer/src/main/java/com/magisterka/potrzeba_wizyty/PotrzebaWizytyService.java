@@ -13,6 +13,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Singleton
 public class PotrzebaWizytyService {
@@ -24,8 +25,7 @@ public class PotrzebaWizytyService {
     private AnkietaCyklicznaRepository ankietaCyklicznaRepository;
 
     public List<Long> getListaPacjentowPotrzebujacychWizyty(long doctorId) {
-        String contextAsString = new PotrzebaWizytyContext.PotrzebaWizytyDlaLekarza(doctorId).asString();
-        return potrzebaWizytyRepository.findByContextAndClosedAtIsNotNull(contextAsString)
+        return potrzebaWizytyRepository.findByDoctorIdAndClosedAtIsNull(doctorId)
                 .stream()
                 .map(PotrzebaWizytyEntity::getPatientId)
                 .distinct()
@@ -34,27 +34,29 @@ public class PotrzebaWizytyService {
 
     public void clearPotrzebyWizytyDlaPacjenta(long doctorId, long patientId) {
         Instant now = Instant.now();
-        String contextAsString = new PotrzebaWizytyContext.PotrzebaWizytyDlaLekarza(doctorId).asString();
-        potrzebaWizytyRepository.updateByContextAndPatientIdAndClosedAtIsNull(contextAsString, patientId, now);
+        potrzebaWizytyRepository.updateByDoctorIdAndPatientIdAndClosedAtIsNull(doctorId, patientId, now);
     }
 
     @Transactional
-    public void stworzPotrzebeWizytyJesliPotrzeba(AnkietaCyklicznaEntity ankietaCyklicznaEntity) {
+    public Optional<PotrzebaWizyty> stworzPotrzebeWizytyJesliPotrzeba(AnkietaCyklicznaEntity ankietaCyklicznaEntity) {
         List<String> powodyPotrzebyWizyty = getPowodyPotrzebyWizyty(ankietaCyklicznaEntity);
         if (powodyPotrzebyWizyty.isEmpty()) {
-            return;
+            return Optional.empty();
         }
         String powodyAsString = String.join(", ", powodyPotrzebyWizyty);
 
         // todo
 
-        List<PotrzebaWizytyContext> contexts = resolveContext(ankietaCyklicznaEntity.getPatientId());
-        contexts.forEach(context -> potrzebaWizytyRepository.save(new PotrzebaWizytyEntity(
-                null,
-                context.asString(),
-                ankietaCyklicznaEntity.getPatientId(),
-                powodyAsString,
-                null)));
+
+        resolveLakarzProwadzacyId(ankietaCyklicznaEntity.getPatientId())
+                .ifPresent(lekarzProwadzacyId -> potrzebaWizytyRepository.save(new PotrzebaWizytyEntity(
+                        null,
+                        lekarzProwadzacyId,
+                        ankietaCyklicznaEntity.getPatientId(),
+                        powodyAsString,
+                        null)));
+
+        return Optional.of(new PotrzebaWizyty(powodyAsString, ankietaCyklicznaEntity.getPatientId()));
     }
 
     private List<String> getPowodyPotrzebyWizyty(AnkietaCyklicznaEntity ankietaCyklicznaEntity) {
@@ -84,19 +86,8 @@ public class PotrzebaWizytyService {
         return powody;
     }
 
-    private List<PotrzebaWizytyContext> resolveContext(Long patientId) {
-        List<PotrzebaWizytyContext> contexts = new ArrayList<>();
-        contexts.add(new PotrzebaWizytyContext.PotrzebaWizytyDlaPacjenta(patientId));
-        patientRepository.findById(patientId)
-                .map(PatientEntity::getLekarzProwadzacyId)
-                .ifPresent(lekarzProwadzacyId -> contexts.add(new PotrzebaWizytyContext.PotrzebaWizytyDlaLekarza(lekarzProwadzacyId)));
-        return contexts;
-    }
-
-    private PotrzebaWizyty mapFromEntity(PotrzebaWizytyEntity entity) {
-        return new PotrzebaWizyty(
-                entity.getId(),
-                entity.getDetails(),
-                entity.getPatientId());
+    private Optional<Long> resolveLakarzProwadzacyId(Long patientId) {
+        return patientRepository.findById(patientId)
+                .map(PatientEntity::getLekarzProwadzacyId);
     }
 }

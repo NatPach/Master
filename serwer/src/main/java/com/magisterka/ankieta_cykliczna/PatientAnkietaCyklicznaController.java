@@ -1,5 +1,6 @@
 package com.magisterka.ankieta_cykliczna;
 
+import com.magisterka.potrzeba_wizyty.PotrzebaWizyty;
 import com.magisterka.potrzeba_wizyty.PotrzebaWizytyService;
 import com.magisterka.security.AuthAttributesProvider;
 import com.magisterka.security.SecurityRoles;
@@ -35,7 +36,7 @@ public class PatientAnkietaCyklicznaController {
     }
 
     @Post
-    public void putPatientAnkietaCykliczna(@NotNull @Valid @Body AnkietaCykliczna ankietaCykliczna) {
+    public PotrzebaWizyty addPatientAnkietaCykliczna(@NotNull @Valid @Body AnkietaCykliczna ankietaCykliczna) {
         long patientId = authAttributesProvider.getPatientId();
         Instant createdAt = Instant.now();
         AnkietaCyklicznaEntity entity = ankietaCyklicznaRepository.save(new AnkietaCyklicznaEntity(
@@ -47,7 +48,7 @@ public class PatientAnkietaCyklicznaController {
                 ankietaCykliczna.isPotrzebaWizyty(),
                 ankietaCykliczna.getInneUwagiZdrowotne(),
                 createdAt));
-        potrzebaWizytyService.stworzPotrzebeWizytyJesliPotrzeba(entity);
+        return potrzebaWizytyService.stworzPotrzebeWizytyJesliPotrzeba(entity).orElse(new PotrzebaWizyty());
     }
 
     private AnkietaCykliczna mapFromEntity(AnkietaCyklicznaEntity entity) {

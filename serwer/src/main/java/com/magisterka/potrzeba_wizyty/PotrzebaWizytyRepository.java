@@ -8,9 +8,7 @@ import java.util.List;
 
 @Repository
 public interface PotrzebaWizytyRepository extends CrudRepository<PotrzebaWizytyEntity, Long> {
-    List<PotrzebaWizytyEntity> findByContextAndClosedAtIsNotNull(String context);
+    List<PotrzebaWizytyEntity> findByDoctorIdAndClosedAtIsNull(Long doctorId);
 
-    List<PotrzebaWizytyEntity> findByPatientId(Long patientId);
-
-    void updateByContextAndPatientIdAndClosedAtIsNull(String context, Long patientId, Instant closedAt);
+    void updateByDoctorIdAndPatientIdAndClosedAtIsNull(Long doctorId, Long patientId, Instant closedAt);
 }

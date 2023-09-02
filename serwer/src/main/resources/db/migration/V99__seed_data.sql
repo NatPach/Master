@@ -21,6 +21,5 @@ VALUES (1, 'GORSZE', 190, 93, false, 'bolaca glowa', '2023-08-20 10:57:50'),
        (1, 'GORSZE', 121, 93, false, null, '2023-08-21 18:36:22');
 
 # seed potrzeba wizyty
-INSERT INTO potrzeba_wizyty (context, patient_id, details)
-VALUES ('doctor:1', 1, 'spadek wagi'),
-       ('patient:1', 1, 'spadek wagi');
+INSERT INTO potrzeba_wizyty (doctor_id, patient_id, details)
+VALUES (1, 1, 'spadek wagi');
