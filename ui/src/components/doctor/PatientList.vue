@@ -1,39 +1,50 @@
 <script>
 import {useSessionStore} from "@/stores/session";
+import Table from "@/components/Table.vue";
+import AnkietaCyklicznaTable from "@/components/AnkietaCyklicznaTable.vue";
 import config from "@/config";
 
 export default {
+  components: {
+    Table,
+    AnkietaCyklicznaTable
+  },
   data: function() {
     return {
-      patientList: [],
-      selectedPatientId: null,
+      patientTable: {
+        columns: [
+          {
+            name: 'Imię',
+            key: 'firstName'
+          },
+          {
+            name: 'Nazwisko',
+            key: 'lastName'
+          },
+          {
+            name: "Pesel",
+            key: "pesel"
+          },
+          {
+            name: "Email",
+            key: "email"
+          },
+        ],
+        data: [],
+      },
+      selectedPatient: null,
       ankietaWstepna: null,
-      ankietaCyklicznaList: []
+      ankietaCyklicznaData: []
     };
   },
   setup() {
-    const patientHeaders = [
-      { text: "Id", value: "id" },
-      { text: "Imię", value: "firstName", sortable: true },
-      { text: "Nazwisko", value: "lastName", sortable: true },
-      { text: "Email", value: "email", sortable: true }
-    ];
-    const ankietaCyklicznaHeaders = [
-      { text: "Tętno", value: "tetno" },
-      { text: "Samopoczucie", value: "samopoczucie" },
-      { text: "Data pomiaru", value: "createdAt", sortable: true }
-    ];
     const sessionStore = useSessionStore();
-    return {
-      patientHeaders,
-      sessionStore,
-      ankietaCyklicznaHeaders
-    };
+    return { sessionStore };
   },
   methods: {
     onPatientClick: function (item) {
       const patientId = item.id;
-      this.selectedPatientId = patientId;
+      this.selectedPatient = item;
       this.axios.get(`${config.serverUrl}/patients/${patientId}/ankieta-wstepna`, { headers: {"Authorization" : `Bearer ${this.sessionStore.accessToken()}`} })
           .then(response => {
             this.ankietaWstepna = response.data;
@@ -48,11 +59,7 @@ export default {
           });
       this.axios.get(`${config.serverUrl}/patients/${patientId}/ankieta-cykliczna`, { headers: {"Authorization" : `Bearer ${this.sessionStore.accessToken()}`} })
           .then(response => {
-            this.ankietaCyklicznaList = (response.data ?? []).map(value => {
-              value.samopoczucie = value.samopoczucie.toLowerCase().replace('_', ' ');
-              value.createdAt = new Date(value.createdAt * 1000).toLocaleString();
-              return value;
-            });
+            this.ankietaCyklicznaData = response.data;
           })
           .catch(error => {
             console.log(`Błąd podczas pobierania ankiet cyklicznych pacjenta o id = ${patientId}.`, error)
@@ -65,7 +72,7 @@ export default {
   mounted() {
     this.axios.get(`${config.serverUrl}/patients`, { headers: {"Authorization" : `Bearer ${this.sessionStore.accessToken()}`} })
         .then(response => {
-          this.patientList = response.data ?? [];
+          this.patientTable.data = response.data;
         })
         .catch(error => {
           console.log("Błąd podczas pobierania pacjentów.", error)
@@ -75,48 +82,105 @@ export default {
 </script>
 
 <template>
-  <div class="mb-5">
-    <EasyDataTable
-        :headers="patientHeaders"
-        :items="patientList"
-        @click-row="onPatientClick"
-    />
-  </div>
-
-  <div class="border rounded p-3">
-    <div class="h4 mb-3">Szczegóły pacjenta</div>
-    <template v-if="ankietaWstepna !== null">
-      <div class="mb-3 row">
-        <label for="staticWeight" class="col-sm-2 col-form-label">Waga</label>
-        <div class="col-sm-10">
-          <input type="text" readonly class="form-control-plaintext" id="staticWeight" :value="ankietaWstepna.waga">
+  <template v-if="selectedPatient === null">
+    <div>
+      <Table :columns="patientTable.columns" :data="patientTable.data" :on-row-click="onPatientClick"/>
+    </div>
+  </template>
+  <template v-else>
+    <div class="mb-3">
+      <button type="button" class="btn btn-outline-primary" @click="() => selectedPatient = null">Wróć do listy pacjenów</button>
+    </div>
+    <div class="border rounded p-3">
+      <div class="h4 mb-3">Szczegóły pacjenta</div>
+      <div class="row mb-5">
+        <div class="col-6">
+          <div class="mb-1 row">
+            <label for="staticFirstName" class="col-4 col-form-label fw-bold">Imie</label>
+            <div class="col-8">
+              <input type="text" readonly class="form-control-plaintext" id="staticFirstName" :value="selectedPatient.firstName">
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="mb-1 row">
+            <label for="staticLastName" class="col-4 col-form-label fw-bold">Nazwiko</label>
+            <div class="col-8">
+              <input type="text" readonly class="form-control-plaintext" id="staticLastName" :value="selectedPatient.lastName">
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="mb-1 row">
+            <label for="staticPesel" class="col-4 col-form-label fw-bold">Pesel</label>
+            <div class="col-8">
+              <input type="text" readonly class="form-control-plaintext" id="staticPesel" :value="selectedPatient.pesel">
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="mb-1 row">
+            <label for="staticEmail" class="col-4 col-form-label fw-bold">Email</label>
+            <div class="col-8">
+              <input type="text" readonly class="form-control-plaintext" id="staticEmail" :value="selectedPatient.email">
+            </div>
+          </div>
         </div>
       </div>
-      <div class="mb-3 row">
-        <label for="staticHeight" class="col-sm-2 col-form-label">Wzrost</label>
-        <div class="col-sm-10">
-          <input type="text" readonly class="form-control-plaintext" id="staticHeight" :value="ankietaWstepna.wzrost">
+      <div class="h4 mb-3">Ankieta wstępna</div>
+      <template v-if="ankietaWstepna !== null">
+        <div class="row mb-5">
+          <div class="col-6">
+            <div class="mb-1 row">
+              <label for="staticHeight" class="col-4 col-form-label fw-bold">Wzrost</label>
+              <div class="col-8">
+                <input type="text" readonly class="form-control-plaintext" id="staticHeight" :value="ankietaWstepna.wzrost">
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="mb-1 row">
+              <label for="staticBloodType" class="col-4 col-form-label fw-bold">Grupa krwi</label>
+              <div class="col-8">
+                <input type="text" readonly class="form-control-plaintext" id="staticBloodType" :value="ankietaWstepna.grupaKrwi">
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="mb-1 row">
+              <label for="staticTrybZycia" class="col-4 col-form-label fw-bold">Tryb życia</label>
+              <div class="col-8">
+                <input type="text" readonly class="form-control-plaintext" id="staticTrybZycia" :value="ankietaWstepna.trybZycia">
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="mb-1 row">
+              <label for="staticPrzyjmowaneLeki" class="col-4 col-form-label fw-bold">Przyjmowane leki</label>
+              <div class="col-8">
+                <input type="text" readonly class="form-control-plaintext" id="staticPrzyjmowaneLeki" :value="ankietaWstepna.przyjmowaneLeki">
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="mb-1 row">
+              <label for="staticAlergie" class="col-4 col-form-label fw-bold">Alergie</label>
+              <div class="col-8">
+                <input type="text" readonly class="form-control-plaintext" id="staticAlergie" :value="ankietaWstepna.alergie">
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="mb-3 row">
-        <label for="staticBloodType" class="col-sm-2 col-form-label">Grupa krwi</label>
-        <div class="col-sm-10">
-          <input type="text" readonly class="form-control-plaintext" id="staticBloodType" :value="ankietaWstepna.grupaKrwi">
-        </div>
-      </div>
-      <div class="h5 mb-3">Ankiety cykliczne</div>
-      <EasyDataTable
-          :headers="ankietaCyklicznaHeaders"
-          :items="ankietaCyklicznaList"
-      />
-    </template>
-    <template v-else>
-      <template v-if="selectedPatientId !== null">
-        Pacjent o id {{ selectedPatientId }} nie wypełnił jeszcze ankiety.
       </template>
       <template v-else>
-        Proszę wybrać pacjenta.
+        <div class="mb-5">
+          Pacjent o id {{ selectedPatient.id }} nie wypełnił jeszcze ankiety.
+        </div>
       </template>
-    </template>
-  </div>
+      <div class="h4 mb-3">Ankiety cykliczne</div>
+      <div class="mb-5">
+        <AnkietaCyklicznaTable :data="ankietaCyklicznaData" />
+      </div>
+    </div>
+  </template>
 </template>

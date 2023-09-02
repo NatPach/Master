@@ -8,6 +8,8 @@ import lombok.Value;
 public class Patient {
     Long id;
     String firstName;
+    String middleName;
     String lastName;
     String email;
+    String pesel;
 }

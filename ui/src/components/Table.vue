@@ -3,13 +3,17 @@
 export default {
   props: {
     columns: {
-      type: Object,
+      type: Array,
       required: true
     },
     data: {
-      type: Object,
+      type: Array,
       required: true
-    }
+    },
+    onRowClick: {
+      type: Function,
+      required: false,
+    },
   },
   data: function () {
     return {
@@ -34,6 +38,11 @@ export default {
     onCellLeave: function () {
       this.cellHovered = null;
     },
+    onRowClickWrapper: function (row) {
+      if (this.onRowClick) {
+        this.onRowClick(row);
+      }
+    }
   }
 }
 </script>
@@ -64,7 +73,7 @@ export default {
         <template v-for="(row, rowIndex) in data">
           <tr>
             <template v-for="(column, colIndex) in columns">
-              <td v-bind:class="((shouldCellBeHighlighted(rowIndex, colIndex)) ? 'cell-hovered' : '') + ' py-3 px-4'" v-on:mouseover="onCellEnter(rowIndex, colIndex)" v-on:mouseleave="onCellLeave()">
+              <td v-bind:class="((shouldCellBeHighlighted(rowIndex, colIndex)) ? 'cell-hovered' : '') + ' py-3 px-4'" v-on:mouseover="onCellEnter(rowIndex, colIndex)" v-on:mouseleave="onCellLeave()" @click="() => onRowClickWrapper(row)">
                 {{ extractCellValue(column, row) }}
               </td>
             </template>

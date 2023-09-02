@@ -5,7 +5,9 @@ VALUES (1, 'Kamil', 'Lekarz', 'lekarz@gmail.com', '9f86d081884c7d659a2feaa0c55ad
 # seed patients
 INSERT INTO patient (id, first_name, middle_name, last_name, pesel, email, password_hash, lekarz_prowadzacy_id)
 VALUES (1, 'Tomek', 'Grzegorz', 'Pacjent', '96082600000', 'pacjent@gmail.com', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 1),
-       (2, 'Inny', null, 'Pacjent', '11111111111', 'nowy@gmail.com', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', null);
+       (2, 'Inny', null, 'Pacjent', '11111111111', 'nowy@gmail.com', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', null),
+       (3, 'Kamil', 'Grzegorz', 'Pacjent', '33333333333', 'pacjent1@gmail.com', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 1),
+       (4, 'Ania', null, 'Pacjent 2', '22222222222', 'pacjent2@gmail.com', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 1);
 
 # seed ankieta wstepna
 INSERT INTO ankieta_wstepna (patient_id, height, blood_type, tryb_zycia, przyjmowane_leki, alergie)

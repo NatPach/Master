@@ -3,10 +3,12 @@
 import {useSessionStore} from "@/stores/session";
 import config from "@/config";
 import Table from "@/components/Table.vue";
+import AnkietaCyklicznaTable from "@/components/AnkietaCyklicznaTable.vue";
 
 export default {
   components: {
     Table,
+    AnkietaCyklicznaTable,
   },
   setup() {
     const sessionStore = useSessionStore();
@@ -24,39 +26,6 @@ export default {
       potrzebaWizyty: false,
       inneUwagiZdrowotne: null,
 
-      columns: [
-        {
-          name: 'Data pomiaru',
-          key: 'createdAt',
-          mapper: (value, row, key) => {
-            if (!value) {
-              return null;
-            }
-            return new Date(value * 1000).toLocaleString()
-          }
-        },
-        {
-          name: 'Tętno',
-          key: 'tetno'
-        },
-        {
-          name: 'Samopoczucie',
-          key: 'samopoczucie'
-        },
-        {
-          name: "Waga",
-          key: "waga"
-        },
-        {
-          name: "Potrzeba wizyty",
-          key: "potrzebaWizyty",
-          mapper: (value, row, key) => value ? 'Tak' : 'Nie'
-        },
-        {
-          name: "Inne uwagi zdrowotne",
-          key: "inneUwagiZdrowotne"
-        },
-      ],
       data: []
     };
   },
@@ -151,6 +120,6 @@ export default {
   </div>
 
   <div class="mt-5">
-    <Table :data="data" :columns="columns"/>
+    <AnkietaCyklicznaTable :data="data" />
   </div>
 </template>

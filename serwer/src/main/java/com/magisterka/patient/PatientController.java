@@ -1,5 +1,6 @@
 package com.magisterka.patient;
 
+import com.magisterka.security.AuthAttributesProvider;
 import com.magisterka.security.SecurityRoles;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.annotation.Controller;
@@ -18,17 +19,22 @@ import java.util.stream.StreamSupport;
 public class PatientController {
     @Inject
     private PatientRepository patientRepository;
+    @Inject
+    private AuthAttributesProvider authAttributesProvider;
 
     @Get("/patients")
     public List<Patient> getPatients() {
-        return StreamSupport.stream(patientRepository.findAll().spliterator(), false)
+        Long doctorId = authAttributesProvider.getDoctorId();
+        return StreamSupport.stream(patientRepository.findAllByLekarzProwadzacyId(doctorId).spliterator(), false)
                 .map(this::mapFromEntity)
                 .toList();
     }
 
     @Get("/patients/{patientId}")
     public Patient getPatient(@PathVariable @NotNull Long patientId) {
+        Long doctorId = authAttributesProvider.getDoctorId();
         return patientRepository.findById(patientId)
+                .filter(patient -> doctorId.equals(patient.getLekarzProwadzacyId()))
                 .map(this::mapFromEntity)
                 .orElseThrow(() -> new HttpStatusException(HttpStatus.NOT_FOUND, "Patient with id %s not found.".formatted(patientId)));
     }
@@ -38,7 +44,9 @@ public class PatientController {
                 .id(entity.getId())
                 .email(entity.getEmail())
                 .firstName(entity.getFirstName())
+                .middleName(entity.getMiddleName())
                 .lastName(entity.getLastName())
+                .pesel(entity.getPesel())
                 .build();
     }
 }
