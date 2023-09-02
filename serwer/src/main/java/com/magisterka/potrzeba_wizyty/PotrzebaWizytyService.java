@@ -45,9 +45,6 @@ public class PotrzebaWizytyService {
         }
         String powodyAsString = String.join(", ", powodyPotrzebyWizyty);
 
-        // todo
-
-
         resolveLakarzProwadzacyId(ankietaCyklicznaEntity.getPatientId())
                 .ifPresent(lekarzProwadzacyId -> potrzebaWizytyRepository.save(new PotrzebaWizytyEntity(
                         null,

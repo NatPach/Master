@@ -2,12 +2,16 @@
 import {useSessionStore} from "@/stores/session";
 import Table from "@/components/Table.vue";
 import AnkietaCyklicznaTable from "@/components/AnkietaCyklicznaTable.vue";
+import WagaReport from "@/components/doctor/WagaReport.vue";
+import TetnoReport from "@/components/doctor/TetnoReport.vue";
 import config from "@/config";
 
 export default {
   components: {
     Table,
-    AnkietaCyklicznaTable
+    AnkietaCyklicznaTable,
+    WagaReport,
+    TetnoReport,
   },
   props: {
     patient: {
@@ -43,7 +47,7 @@ export default {
         data: [],
       },
       ankietaWstepna: null,
-      ankietaCyklicznaData: []
+      ankietaCyklicznaData: [],
     };
   },
   setup() {
@@ -180,6 +184,17 @@ export default {
         Pacjent o id {{ patient.id }} nie wypełnił jeszcze ankiety.
       </div>
     </template>
+    <div class="h4 mb-3">Wykres danych z ostatniego tygodnia</div>
+    <div class="mb-5">
+      <div class="row">
+        <div class="col-6">
+          <TetnoReport :ankieta-cykliczna-data="ankietaCyklicznaData"/>
+        </div>
+        <div class="col-6">
+          <WagaReport :ankieta-cykliczna-data="ankietaCyklicznaData"/>
+        </div>
+      </div>
+    </div>
     <div class="h4 mb-3">Ankiety cykliczne</div>
     <div class="mb-5">
       <AnkietaCyklicznaTable :data="ankietaCyklicznaData" />
