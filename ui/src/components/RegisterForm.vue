@@ -17,6 +17,7 @@ export default {
       middleName: null,
       lastName: null,
       email: null,
+      phone: null,
       pesel: null,
       password: null,
     };
@@ -31,6 +32,7 @@ export default {
         lastName: this.lastName,
         pesel: this.pesel,
         email: this.email,
+        phone: this.phone,
         password: this.password
       };
       this.axios.post(`${config.serverUrl}/${this.registerAs}/register`, data)
@@ -86,6 +88,10 @@ export default {
   <div class="mb-3">
     <label for="inputEmail" class="form-label">Email</label>
     <input type="email" class="form-control" id="inputEmail" v-model="email">
+  </div>
+  <div class="mb-3">
+    <label for="inputPhone" class="form-label">Numer telefonu</label>
+    <input type="text" class="form-control" id="inputPhone" v-model="phone">
   </div>
   <div class="mb-4">
     <label for="inputPassword" class="form-label">Hasło</label>
