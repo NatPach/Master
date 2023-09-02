@@ -8,6 +8,7 @@ import com.magisterka.patient.PatientRepository;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
+import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -22,19 +23,31 @@ public class PotrzebaWizytyService {
     @Inject
     private AnkietaCyklicznaRepository ankietaCyklicznaRepository;
 
-    public List<PotrzebaWizyty> getNotClosedPotrzebyWizyty(PotrzebaWizytyContext context) {
-        return potrzebaWizytyRepository.findByContextAndClosedAtIsNotNull(context.asString())
+    public List<Long> getListaPacjentowPotrzebujacychWizyty(long doctorId) {
+        String contextAsString = new PotrzebaWizytyContext.PotrzebaWizytyDlaLekarza(doctorId).asString();
+        return potrzebaWizytyRepository.findByContextAndClosedAtIsNotNull(contextAsString)
                 .stream()
-                .map(this::mapFromEntity)
+                .map(PotrzebaWizytyEntity::getPatientId)
+                .distinct()
                 .toList();
     }
 
+    public void clearPotrzebyWizytyDlaPacjenta(long doctorId, long patientId) {
+        Instant now = Instant.now();
+        String contextAsString = new PotrzebaWizytyContext.PotrzebaWizytyDlaLekarza(doctorId).asString();
+        potrzebaWizytyRepository.updateByContextAndPatientIdAndClosedAtIsNull(contextAsString, patientId, now);
+    }
+
+    @Transactional
     public void stworzPotrzebeWizytyJesliPotrzeba(AnkietaCyklicznaEntity ankietaCyklicznaEntity) {
         List<String> powodyPotrzebyWizyty = getPowodyPotrzebyWizyty(ankietaCyklicznaEntity);
         if (powodyPotrzebyWizyty.isEmpty()) {
             return;
         }
         String powodyAsString = String.join(", ", powodyPotrzebyWizyty);
+
+        // todo
+
         List<PotrzebaWizytyContext> contexts = resolveContext(ankietaCyklicznaEntity.getPatientId());
         contexts.forEach(context -> potrzebaWizytyRepository.save(new PotrzebaWizytyEntity(
                 null,
