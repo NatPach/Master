@@ -76,6 +76,10 @@ export default {
 
 <template>
   <div class="border rounded p-3">
+    <div class="h4 mb-3 text-center">Ankieta wstępna</div>
+    <div class="alert alert-info" role="alert">
+      Tutaj możesz wprowadzić zmiany danych dotyczących Twojego zdrowia.
+    </div>
     <div class="mb-3 row">
       <label for="inputHeight" class="col-sm-2 col-form-label">Wzrost</label>
       <div class="col-sm-10">
