@@ -56,14 +56,15 @@ export default {
     }
   },
   data() {
+    const boundariesColor = 'blue';
     const annotation1 = {
       type: 'line',
-      borderColor: 'red',
+      borderColor: boundariesColor,
       borderWidth: 3,
       label: {
         enabled: true,
-        backgroundColor: 'red',
-        borderColor: 'red',
+        backgroundColor: boundariesColor,
+        borderColor: boundariesColor,
         borderRadius: 10,
         borderWidth: 2,
         // content: (ctx) => 'Lower bound: ' + this.minYBoundary,
@@ -74,12 +75,12 @@ export default {
     };
     const annotation2 = {
       type: 'line',
-      borderColor: 'red',
+      borderColor: boundariesColor,
       borderWidth: 3,
       label: {
         enabled: true,
-        backgroundColor: 'red',
-        borderColor: 'red',
+        backgroundColor: boundariesColor,
+        borderColor: boundariesColor,
         borderRadius: 10,
         borderWidth: 2,
         // content: (ctx) => 'Upper bound: ' + this.maxYBoundary,

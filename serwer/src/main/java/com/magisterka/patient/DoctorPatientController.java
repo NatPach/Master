@@ -16,7 +16,7 @@ import java.util.stream.StreamSupport;
 
 @Secured(SecurityRoles.DOCTOR)
 @Controller
-public class PatientController {
+public class DoctorPatientController {
     @Inject
     private PatientRepository patientRepository;
     @Inject

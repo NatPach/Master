@@ -99,11 +99,11 @@ export default {
 
 <template>
   <div class="border rounded p-3">
-    <div class="h4 mb-3">Szczegóły pacjenta</div>
+    <div class="h4 mb-3 text-center">Szczegóły pacjenta</div>
     <div class="row mb-5">
       <div class="col-6">
         <div class="mb-1 row">
-          <label for="staticFirstName" class="col-4 col-form-label fw-bold">Imie</label>
+          <label for="staticFirstName" class="col-4 col-form-label fw-bold">Imię</label>
           <div class="col-8">
             <input type="text" readonly class="form-control-plaintext" id="staticFirstName" :value="patient.firstName">
           </div>
@@ -111,7 +111,7 @@ export default {
       </div>
       <div class="col-6">
         <div class="mb-1 row">
-          <label for="staticLastName" class="col-4 col-form-label fw-bold">Nazwiko</label>
+          <label for="staticLastName" class="col-4 col-form-label fw-bold">Nazwisko</label>
           <div class="col-8">
             <input type="text" readonly class="form-control-plaintext" id="staticLastName" :value="patient.lastName">
           </div>
@@ -127,6 +127,14 @@ export default {
       </div>
       <div class="col-6">
         <div class="mb-1 row">
+          <label for="staticPhone" class="col-4 col-form-label fw-bold">Numer telefonu</label>
+          <div class="col-8">
+            <input type="text" readonly class="form-control-plaintext" id="staticPhone" :value="patient.phone">
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="mb-1 row">
           <label for="staticEmail" class="col-4 col-form-label fw-bold">Email</label>
           <div class="col-8">
             <input type="text" readonly class="form-control-plaintext" id="staticEmail" :value="patient.email">
@@ -134,7 +142,7 @@ export default {
         </div>
       </div>
     </div>
-    <div class="h4 mb-3">Ankieta wstępna</div>
+    <div class="h4 mb-3 text-center">Ankieta wstępna</div>
     <template v-if="ankietaWstepna !== null">
       <div class="row mb-5">
         <div class="col-6">
@@ -180,11 +188,11 @@ export default {
       </div>
     </template>
     <template v-else>
-      <div class="mb-5">
-        Pacjent o id {{ patient.id }} nie wypełnił jeszcze ankiety.
+      <div class="mb-5 text-center">
+        Pacjent nie wypełnił jeszcze ankiety.
       </div>
     </template>
-    <div class="h4 mb-3">Wykres danych z ostatniego tygodnia</div>
+    <div class="h4 mb-3 text-center">Wykres danych z ostatniego tygodnia</div>
     <div class="mb-5">
       <div class="row">
         <div class="col-6">
@@ -195,7 +203,7 @@ export default {
         </div>
       </div>
     </div>
-    <div class="h4 mb-3">Ankiety cykliczne</div>
+    <div class="h4 mb-3 text-center">Ankiety cykliczne</div>
     <div class="mb-5">
       <AnkietaCyklicznaTable :data="ankietaCyklicznaData" />
     </div>
